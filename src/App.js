@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { UseState } from './UseState';
 import { ClassState } from './ClassState';
