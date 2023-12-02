@@ -1,41 +1,40 @@
 import React from "react";
 
 const SECURITY_CODE = "SECRET";
+const defaultValue = { error: false, loading: false, valueInput: "" };
 
 function UseState({ name }) {
-  const [error, setError] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const [valueInput, setValueInput] = React.useState("");
+  const [state, setState] = React.useState({ ...defaultValue });
 
   React.useEffect(() => {
     setTimeout(() => {
-      if (loading) {
-        if (valueInput !== SECURITY_CODE) {
-          setError(true);
+      if (state.loading) {
+        if (state.valueInput !== SECURITY_CODE) {
+          setState({ ...state, error: true,loading: false });
+          return
         }
-        setLoading(false);
+        setState({ ...state,error:false, loading: false });
       }
     }, 3000);
-  }, [loading]);
+  }, [state.loading]);
 
   return (
     <div>
       <h2>Eliminar {name}</h2>
       <p>Por favor escribe el codigo de seguridad.</p>
-      {(error && !loading) && <p>Error: El codigo es incorrecto</p>}
-      {loading && <p>Loading...</p>}
+      {state.error && !state.loading && <p>Error: El codigo es incorrecto</p>}
+      {state.loading && <p>Loading...</p>}
       <input
         placeholder="Codigo de seguridad"
         type="password"
-        value={valueInput}
+        value={state.valueInput}
         onChange={(event) => {
-          setValueInput(event.target.value);
+          setState({ ...state, valueInput: event.target.value });
         }}
       />
       <button
         onClick={() => {
-          setLoading(true);
-          setError(false);
+          setState({ ...state, loading: true, error: false });
         }}
       >
         Comprobar
